@@ -1,0 +1,5 @@
+br.com.eigmercados.signature.ui
+org.jdamico.scryptool.commons
+org.jdamico.scryptool.crypto
+org.jdamico.scryptool.entities
+org.jdamico.scryptool.launchers
