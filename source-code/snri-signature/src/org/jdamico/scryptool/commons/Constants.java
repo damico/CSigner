@@ -1,3 +1,43 @@
+/********************************************************************************/
+/* 																				*/
+/* Copyright [2016]	Robson de Melo Silva,										*/
+/* 					Vitoria Akemi Kanegae,										*/
+/* 					Jose Ricardo de Oliveira Damico								*/
+/* 																				*/
+/* Licensed under the Apache License, Version 2.0 (the "License");				*/
+/* you may not use this file except in compliance with the License.				*/
+/* You may obtain a copy of the License at										*/
+/* 																				*/
+/*     http://www.apache.org/licenses/LICENSE-2.0								*/
+/* 																				*/
+/* Unless required by applicable law or agreed to in writing, software			*/
+/* distributed under the License is distributed on an "AS IS" BASIS,			*/
+/* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.		*/
+/* See the License for the specific language governing permissions and			*/
+/* limitations under the License.												*/
+/*																				*/
+/********************************************************************************/
+
+/********************************************************************************/
+/* 																				*/
+/* Copyright [2016]	Robson de Melo Silva,										*/
+/* 					Vitoria Akemi Kanegae,										*/
+/* 					Jose Ricardo de Oliveira Damico								*/
+/* 																				*/
+/* Licensed under the Apache License, Version 2.0 (the "License");				*/
+/* you may not use this file except in compliance with the License.				*/
+/* You may obtain a copy of the License at										*/
+/* 																				*/
+/*     http://www.apache.org/licenses/LICENSE-2.0								*/
+/* 																				*/
+/* Unless required by applicable law or agreed to in writing, software			*/
+/* distributed under the License is distributed on an "AS IS" BASIS,			*/
+/* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.		*/
+/* See the License for the specific language governing permissions and			*/
+/* limitations under the License.												*/
+/*																				*/
+/********************************************************************************/
+
 package org.jdamico.scryptool.commons;
 
 public interface Constants {
@@ -7,7 +47,7 @@ public interface Constants {
 	public static final String DIGITAL_SIGNATURE_ALGORITHM_NAME = "SHA1withRSA";
 	public static final String SUN_PKCS11_PROVIDER_CLASS = "sun.security.pkcs11.SunPKCS11";
     public static final String PKCS12_KEYSTORE_TYPE = "PKCS12";
-	public static final String APP_NAME = "Cryptool";
+	public static final String APP_NAME = "CSigner";
 	public static final String APP_VERSION = "0.0.1";
 	public static final String LOG_NAME = APP_NAME+".log";
 	public static final String LOG_FOLDER = "./";
