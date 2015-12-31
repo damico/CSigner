@@ -15,3 +15,9 @@ This project contains the source code to study case, javadocs and CSigner.exe us
 - commons-logging (from Apache under Apache v2 License)
 - log4j (from Apache under Apache v2 License)
 - pdfbox (from Apache under Apache v2 License)
+
+--
+
+### License
+
+- CSigner is licensed under *Apache License Version 2.0* (http://opensource.org/licenses/Apache-2.0)
