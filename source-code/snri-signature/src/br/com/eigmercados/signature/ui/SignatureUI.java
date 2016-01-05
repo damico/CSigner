@@ -28,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.security.SignatureException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -46,14 +45,13 @@ public class SignatureUI extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JLabel labelName = new JLabel("Selecione o Arquivo:");
-	private JTextField fileName = new JTextField();
+	private JTextField fileName = new JTextField("Selecione a DLL");
 	private JButton buttonSelect = new JButton("Procurar");
 	private JFileChooser fileChooser = new JFileChooser();
 	private JFileChooser selectDll = new JFileChooser();
 	private JButton signButton = new JButton("Assinar");
 	private JButton selectDllButton = new JButton("Alterar DLL");
-	private final String dllSource = "C:\\Windows\\System32\\aetpkss1.dll";
-	private String dllAlternativePath;
+	private String dllSource = "";
 
 	public SignatureUI() {
 
@@ -77,6 +75,9 @@ public class SignatureUI extends JFrame implements ActionListener {
 		this.setResizable(false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		labelName.setBounds(10, 10, 130, 50);
+		fileName.setEditable(false);
+		signButton.setEnabled(false);
+		buttonSelect.setEnabled(false);
 		fileName.setBounds(150, 25, 300, 25);
 		buttonSelect.setBounds(470, 25, 100, 25);
 		signButton.setBounds(250,70, 100, 30);
@@ -107,7 +108,7 @@ public class SignatureUI extends JFrame implements ActionListener {
 				signDocumento();
 			}
 		} else if(e.getSource() == selectDllButton){
-			int returnVal = fileChooser.showOpenDialog(this);
+			int returnVal = selectDll.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				selectDll();
 			}
@@ -115,12 +116,16 @@ public class SignatureUI extends JFrame implements ActionListener {
 	}
 	private void selectDll(){
 		File file = selectDll.getSelectedFile();
-		setDllAlternativePath(file.getAbsolutePath());
+		setDllSource(file.getAbsolutePath());
+		fileName.setText("Selecione o arquivo a ser assinado.");
+		buttonSelect.setEnabled(true);
+		
 	}
 
 	private void selectFile(){
 		File file = fileChooser.getSelectedFile();
 		fileName.setText(file.getAbsolutePath());
+		signButton.setEnabled(true);
 	}
 
 	private void signDocumento(){
@@ -131,11 +136,9 @@ public class SignatureUI extends JFrame implements ActionListener {
 
 		if(opt == JOptionPane.OK_OPTION){
 			String senha = new String (pf.getPassword());
-			if(getDllAlternativePath() != null ){
-				libPath = getDllAlternativePath();
-			}else{
-				libPath = dllSource;
-			}
+
+			libPath = dllSource;
+			
 			
 			if(fileName.getText().endsWith(".pdf")){
 				EmbedSignature emb = new EmbedSignature();
@@ -171,11 +174,13 @@ public class SignatureUI extends JFrame implements ActionListener {
 		}
 	}
 
-	private String getDllAlternativePath() {
-		return dllAlternativePath;
+	public String getDllSource() {
+		return dllSource;
 	}
 
-	private void setDllAlternativePath(String localAlternativoDll) {
-		this.dllAlternativePath = localAlternativoDll;
-	}	
+	public void setDllSource(String dllSource) {
+		this.dllSource = dllSource;
+	}
+	
+
 }
