@@ -1,0 +1,66 @@
+/********************************************************************************/
+/* 																				*/
+/* Copyright [2016]	Robson de Melo Silva,										*/
+/* 					Vitoria Akemi Kanegae,										*/
+/* 					Jose Ricardo de Oliveira Damico								*/
+/* 																				*/
+/* Licensed under the Apache License, Version 2.0 (the "License");				*/
+/* you may not use this file except in compliance with the License.				*/
+/* You may obtain a copy of the License at										*/
+/* 																				*/
+/*     http://www.apache.org/licenses/LICENSE-2.0								*/
+/* 																				*/
+/* Unless required by applicable law or agreed to in writing, software			*/
+/* distributed under the License is distributed on an "AS IS" BASIS,			*/
+/* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.		*/
+/* See the License for the specific language governing permissions and			*/
+/* limitations under the License.												*/
+/*																				*/
+/********************************************************************************/
+
+/********************************************************************************/
+/* 																				*/
+/* Copyright [2016]	Robson de Melo Silva,										*/
+/* 					Vitoria Akemi Kanegae,										*/
+/* 					Jose Ricardo de Oliveira Damico								*/
+/* 																				*/
+/* Licensed under the Apache License, Version 2.0 (the "License");				*/
+/* you may not use this file except in compliance with the License.				*/
+/* You may obtain a copy of the License at										*/
+/* 																				*/
+/*     http://www.apache.org/licenses/LICENSE-2.0								*/
+/* 																				*/
+/* Unless required by applicable law or agreed to in writing, software			*/
+/* distributed under the License is distributed on an "AS IS" BASIS,			*/
+/* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.		*/
+/* See the License for the specific language governing permissions and			*/
+/* limitations under the License.												*/
+/*																				*/
+/********************************************************************************/
+
+package org.jdamico.scryptool.commons;
+
+public interface Constants {
+	public static final String PKCS11_KEYSTORE_TYPE = "PKCS11";
+	public static final String X509_CERTIFICATE_TYPE = "X.509";
+	public static final String CERTIFICATION_CHAIN_ENCODING = "PkiPath";
+	public static final String DIGITAL_SIGNATURE_ALGORITHM_NAME = "SHA1withRSA";
+	public static final String SUN_PKCS11_PROVIDER_CLASS = "sun.security.pkcs11.SunPKCS11";
+    public static final String PKCS12_KEYSTORE_TYPE = "PKCS12";
+	public static final String APP_NAME = "CSigner";
+	public static final String APP_VERSION = "0.0.1";
+	public static final String LOG_NAME = APP_NAME+".log";
+	public static final String LOG_FOLDER = "./";
+	public static final String LOG_FILE = LOG_FOLDER+LOG_NAME;
+	public static final String WIN_COMMON_LIB = "C:/Windows/System32/aetpkss1.dll";
+	public static final String LINUX_COMMON_LIB = "/usr/lib/libaetpkss.so";
+	public static final String BASIC_PARAMS = "<path-to-conf-file> <operation-number> <source-file>";
+	
+	public static final String OPER_0 =  "OPERATION 0: Sign using smart card. [Parameters: "+BASIC_PARAMS+" <smart-card-pin> ] In this case, <source-file> is the file to be signed.";
+	public static final String OPER_1 =  "OPERATION 1: Verify signature using smart card. [Parameters: "+BASIC_PARAMS+" <smart-card-pin> <path-to-base64-signature-file>] In this case, <source-file> is the file signed.";
+	public static final String OPER_2 =  "OPERATION 2: Encrypt using smart card. [Parameters: "+BASIC_PARAMS+" <smart-card-pin> ] In this case, <source-file> is the file to be encrypted.";
+	public static final String OPER_3 =  "OPERATION 3: Decrypt using smart card. [Parameters: "+BASIC_PARAMS+" <smart-card-pin> ] In this case, <source-file> is the file to be decrypted.";
+	public static final String OPER_4 =  "OPERATION 4: Get certificate from smart card and save to a file. [Parameters: "+BASIC_PARAMS+" <smart-card-pin> ] In this case, <source-file> is the file path where the certificate will be saved.";
+	public static final String OPER_5 =  "OPERATION 5: Verify signature using saved certificate. [Parameters: "+BASIC_PARAMS+" <path-to-file-signed> <path-to-base64-signature-file>] In this case, <source-file> is the file path where the certificate was saved.";
+
+}
