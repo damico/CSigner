@@ -26,13 +26,10 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
+import java.util.logging.Logger;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.RollingFileAppender;
+
 import org.jdamico.scryptool.commons.Constants;
 import org.jdamico.scryptool.commons.ManageProperties;
 import org.jdamico.scryptool.commons.TopLevelException;
@@ -46,18 +43,6 @@ public class Runtime {
 	public static AppProperties appProperties = null;
 
 	public static void main(String[] args) throws IOException, InvalidKeyException, NoSuchAlgorithmException, SignatureException {
-		Logger rootLogger = Logger.getRootLogger();
-		rootLogger.setLevel(Level.INFO);
-		PatternLayout layout = new PatternLayout("%d{ISO8601} [%t] %-5p %c %x - %m%n");
-		rootLogger.addAppender(new ConsoleAppender(layout));
-		try {
-
-			RollingFileAppender fileAppender = new RollingFileAppender(layout, Constants.LOG_FILE);
-			rootLogger.addAppender(fileAppender);
-		} catch (IOException e) {
-			System.err.println("Failed to find/access "+Constants.LOG_FILE+" !");
-			System.exit(1);
-		}
 
 
 		if(args!=null && args.length > 3){
