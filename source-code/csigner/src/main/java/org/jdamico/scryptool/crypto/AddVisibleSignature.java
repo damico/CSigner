@@ -100,7 +100,7 @@ public class AddVisibleSignature extends CreateSignatureBase {
 
 		setImageFile(new File("dist/digital_signature_icon.jpg"));
 
-		String tsaUrl = null;
+		String tsaUrl = "https://freetsa.org/tsr";
 		// External signing is needed if you are using an external signing service, e.g. to sign
 		// several files at once.
 		boolean externalSig = false;
@@ -267,6 +267,7 @@ public class AddVisibleSignature extends CreateSignatureBase {
 		// register signature dictionary and sign interface
 		signatureOptions = new SignatureOptions();
 		signatureOptions.setVisualSignature(createVisualSignatureTemplate(doc, 0, rect));
+		signatureOptions.setPreferredSignatureSize(8192*2);
 		signatureOptions.setPage(0);
 		doc.addSignature(signature, signatureInterface, signatureOptions);
 

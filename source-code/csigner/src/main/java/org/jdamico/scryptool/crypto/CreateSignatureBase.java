@@ -3,30 +3,48 @@ package org.jdamico.scryptool.crypto;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.GeneralSecurityException;
+import java.net.URL;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.SignatureInterface;
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1EncodableVector;
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1Object;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERSet;
+import org.bouncycastle.asn1.cms.AttributeTable;
+import org.bouncycastle.asn1.cms.Attributes;
+import org.bouncycastle.asn1.pkcs.Attribute;
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaCertStore;
 import org.bouncycastle.cms.CMSException;
 import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.CMSSignedDataGenerator;
+import org.bouncycastle.cms.SignerInformation;
+import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.cms.jcajce.JcaSignerInfoGeneratorBuilder;
+import org.bouncycastle.crypto.digests.SHA512Digest;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
+import org.bouncycastle.tsp.TSPException;
 import org.bouncycastle.util.Store;
 import org.jdamico.scryptool.commons.TopLevelException;
 import org.jdamico.scryptool.entities.PrivateKeyAndCertChain;
@@ -41,6 +59,7 @@ public abstract class CreateSignatureBase implements SignatureInterface
     private String libLocation = null;
     private String pinCode;
     private KeyStore userKeyStore = null;
+    private TSAClient tsaClient = null;
 
     /**
      * Initialize the signature creator with a keystore (pkcs12) and pin that should be used for the
@@ -115,9 +134,12 @@ public abstract class CreateSignatureBase implements SignatureInterface
         return certificateChain;
     }
 
-    public void setTsaUrl(String tsaUrl)
-    {
+    public void setTsaUrl(String tsaUrl){
         this.tsaUrl = tsaUrl;
+    }
+    
+    public String getTsaUrl(){
+        return tsaUrl;
     }
 
     /**
@@ -166,17 +188,28 @@ public abstract class CreateSignatureBase implements SignatureInterface
 				signingChainHolder.add(new X509CertificateHolder(certChain[i].getEncoded()));
 			}
 
-			Store certStore = new JcaCertStore(signingChainHolder);
+			
 
 			CMSTypedDataInputStream input = new CMSTypedDataInputStream(docStream);
 			CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
 			ContentSigner sha512Signer = new JcaContentSignerBuilder("SHA1withRSA").setProvider(pki.getProvider()).build(privateKey);
+			
 
 			gen.addSignerInfoGenerator(new JcaSignerInfoGeneratorBuilder(
 					new JcaDigestCalculatorProviderBuilder().setProvider(pki.getProvider()).build()).build(sha512Signer, new X509CertificateHolder(certChain[0].getEncoded())
 							));
-			gen.addCertificates(certStore);
+			//gen.addCertificates(certStore);
 			CMSSignedData signedData = gen.generate(input, false);
+			
+			Security.addProvider(new BouncyCastleProvider());
+			MessageDigest digest = MessageDigest.getInstance("SHA-512", "BC");
+			
+			
+			tsaClient = new TSAClient(new URL(getTsaUrl()), null, null, digest);
+			
+			if (tsaClient != null){
+	            signedData = signTimeStamps(signedData);
+	        }
 
 			returnData =  signedData.getEncoded(); 
 
@@ -188,9 +221,73 @@ public abstract class CreateSignatureBase implements SignatureInterface
 			e.printStackTrace();
 		} catch (OperatorCreationException e) {
 			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TSPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return returnData;
 	}
+    
+    private CMSSignedData signTimeStamps(CMSSignedData signedData) throws IOException, TSPException {
+        SignerInformationStore signerStore = signedData.getSignerInfos();
+        List<SignerInformation> newSigners = new ArrayList<SignerInformation>();
+
+        for (SignerInformation signer : (Collection<SignerInformation>)signerStore.getSigners()){
+            newSigners.add(signTimeStamp(signer));
+        }
+      
+        return CMSSignedData.replaceSigners(signedData, new SignerInformationStore(newSigners));
+    }
+    
+    private SignerInformation signTimeStamp(SignerInformation signer) throws IOException, TSPException {
+        AttributeTable unsignedAttributes = signer.getUnsignedAttributes();
+
+        
+        
+        ASN1EncodableVector vector = new ASN1EncodableVector();
+        if (unsignedAttributes != null)
+        {
+            vector = unsignedAttributes.toASN1EncodableVector();
+        }
+
+        byte[] token = tsaClient.getTimeStampToken(signer.getSignature());
+        ASN1ObjectIdentifier oid = PKCSObjectIdentifiers.id_aa_signatureTimeStampToken;
+        ASN1Encodable signatureTimeStamp = new Attribute(oid, new DERSet(byteToASN1Object(token)));
+
+        vector.add(signatureTimeStamp);
+        Attributes signedAttributes = new Attributes(vector);
+
+        SignerInformation newSigner = SignerInformation.replaceUnsignedAttributes(
+                signer, new AttributeTable(signedAttributes));
+
+        if (newSigner == null)
+        {
+            return signer;
+        }
+
+        return newSigner;
+    }
+
+    private ASN1Object byteToASN1Object(byte[] data) throws IOException
+    {
+        ASN1InputStream in = new ASN1InputStream(data);
+        try
+        {
+            return in.readObject();
+        }
+        finally
+        {
+            in.close();
+        }
+    }
+    
+    
     /**
      * Set if external signing scenario should be used.
      * If {@code false}, SignatureInterface would be used for signing.
