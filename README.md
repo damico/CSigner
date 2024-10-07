@@ -16,12 +16,12 @@ java -jar target/csigner-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 ```
 **This program has 6 operations:**
 
-- OPERATION 0: Sign using smart card. [Parameters: path-to-conf-file operation-number source-file smart-card-pin ] In this case, source-file is the file to be signed.
-- OPERATION 1: Verify signature using smart card. [Parameters: path-to-conf-file operation-number source-file smart-card-pin path-to-base64-signature-file] In this case, source-file is the file signed.
-- OPERATION 2: Encrypt using smart card. [Parameters: path-to-conf-file operation-number source-file smart-card-pin ] In this case, source-file is the file to be encrypted.
-- OPERATION 3: Decrypt using smart card. [Parameters: path-to-conf-file operation-number source-file smart-card-pin ] In this case, source-file is the file to be decrypted.
-- OPERATION 4: Get certificate from smart card and save to a file. [Parameters: path-to-conf-file operation-number source-file smart-card-pin ] In this case, source-file is the file path where the certificate will be saved.
-- OPERATION 5: Verify signature using saved certificate. [Parameters: path-to-conf-file operation-number source-file path-to-file-signed path-to-base64-signature-file] In this case, source-file is the file path where the certificate was saved.
+- OPERATION 0: **Sign using smart card.** [Parameters: path-to-conf-file operation-number source-file smart-card-pin ] In this case, source-file is the file to be signed.
+- OPERATION 1: **Verify signature using smart card.** [Parameters: path-to-conf-file operation-number source-file smart-card-pin path-to-base64-signature-file] In this case, source-file is the file signed.
+- OPERATION 2: **Encrypt using smart card.** [Parameters: path-to-conf-file operation-number source-file smart-card-pin ] In this case, source-file is the file to be encrypted.
+- OPERATION 3: **Decrypt using smart card.** [Parameters: path-to-conf-file operation-number source-file smart-card-pin ] In this case, source-file is the file to be decrypted.
+- OPERATION 4: **Get certificate from smart card and save to a file.** [Parameters: path-to-conf-file operation-number source-file smart-card-pin ] In this case, source-file is the file path where the certificate will be saved.
+- OPERATION 5: **Verify signature using saved certificate.** [Parameters: path-to-conf-file operation-number source-file path-to-file-signed path-to-base64-signature-file] In this case, source-file is the file path where the certificate was saved.
 
 ### Dependencies
 - bcmail (from BouncyCastle under MIT License)
