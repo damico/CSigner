@@ -78,7 +78,7 @@ public class Runtime {
 
 				String signatureFilePath = null;
 				switch (operation) {
-				case 0:
+				case 0: //SIGN
 					
 					Utils.getInstance().handleVerboseLog(appProperties, 'i', Constants.OPER_0);
 					try {
@@ -90,7 +90,7 @@ public class Runtime {
 					}
 					break;
 
-				case 1:
+				case 1: //VERIFY
 					
 					Utils.getInstance().handleVerboseLog(appProperties, 'i', Constants.OPER_1);
 					try {
@@ -106,7 +106,7 @@ public class Runtime {
 
 					break;
 
-				case 2:
+				case 2: //ENCRYPT
 					Utils.getInstance().handleVerboseLog(appProperties, 'i', Constants.OPER_2);
 					try {
 						scPasswd = args[3];
@@ -117,7 +117,7 @@ public class Runtime {
 					}
 					break;
 
-				case 3:
+				case 3: //DECRYPT
 					Utils.getInstance().handleVerboseLog(appProperties, 'i', Constants.OPER_3);
 					try {
 						scPasswd = args[3];
@@ -129,7 +129,7 @@ public class Runtime {
 					break;
 
 
-				case 4:
+				case 4: //SET CERTIFICATTE FILE
 					Utils.getInstance().handleVerboseLog(appProperties, 'i', Constants.OPER_4);
 					try {
 						scPasswd = args[3];
@@ -140,7 +140,7 @@ public class Runtime {
 					}
 					break;
 
-				case 5:
+				case 5: //VERIFY SIGNATURE BY CERTIFICATE FILE
 					signatureFilePath = args[4];
 					String signedFileFilePath =  args[3];
 					Utils.getInstance().handleVerboseLog(appProperties, 'i', Constants.OPER_5);
