@@ -30,16 +30,18 @@
 			<version>1.11</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcmail-jdk18on -->
 		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcmail-jdk15on</artifactId>
-			<version>1.68</version>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcmail-jdk18on</artifactId>
+		    <version>1.73</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcpkix-jdk15on</artifactId>
-			<version>1.68</version>
+			<artifactId>bcpkix-jdk18on</artifactId>
+			<version>1.73</version>
 		</dependency>
 
 
@@ -51,8 +53,8 @@
 
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.68</version>
+			<artifactId>bcprov-jdk18on</artifactId>
+			<version>1.73</version>
 		</dependency>
 	</dependencies>
 </project>
