@@ -39,6 +39,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -47,8 +48,6 @@ import org.jdamico.scryptool.commons.TopLevelException;
 import org.jdamico.scryptool.commons.Utils;
 import org.jdamico.scryptool.entities.CertificationChainAndSignatureBase64;
 import org.jdamico.scryptool.entities.PrivateKeyAndCertChain;
-
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 public class PKCS12_Helper implements PkiGeneric {
 
@@ -132,7 +131,7 @@ public class PKCS12_Helper implements PkiGeneric {
 		signingResult.mCertificationChain = encodeX509CertChainToBase64(certChain);
 
 		byte[] digitalSignature = signDocument(documentToSign, privateKey);
-		signingResult.mSignature = Base64.encode(digitalSignature);
+		signingResult.mSignature = Base64.getEncoder().encodeToString(digitalSignature);
 
 		// Document signing completed succesfully
 		return signingResult;
@@ -262,7 +261,7 @@ public class PKCS12_Helper implements PkiGeneric {
 		} catch (CertificateEncodingException e) {
 			throw new TopLevelException(e);
 		}
-		String base64encodedCertChain = Base64.encode(certPathEncoded);
+		String base64encodedCertChain = Base64.getEncoder().encodeToString(certPathEncoded);
 		return base64encodedCertChain;
 	}
 
